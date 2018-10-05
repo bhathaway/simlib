@@ -21,6 +21,7 @@ once. All of these choices are below under SIMULATION PARAMETERS.*/
 
 #include "simlib.h"             /* Required for use of simlib.c. */
 #include "assert.h"
+#include "math.h"
 
 #define EVENT_ARRIVAL          1  /* Event type for arrival of customer. */
 #define EVENT_DEPARTURE        2  /* Event type for departure of customer after receiving service. */
@@ -135,7 +136,7 @@ int  empric_cdf(float cdf_value, int arr_sev_no); /*The subroutine for drawing v
 
 /*******************************************************************************************/
 
-main()  /* Main function. */
+int main()  /* Main function. */
 {
     /*Set Evening Indicator*/
     Evening = 0;
@@ -280,7 +281,11 @@ main()  /* Main function. */
 
     /*Open output file, which is a .csv where we collect the simulation statistics*/
 	outfile = fopen("Simulation Statistics.csv", "w");
-    fprintf(outfile,"Iteration, Servers, Policy, Throughput, AWT_All, AWT_On, Rho_On, Rho_All, AWT(Online),AWT(Offline),AWT(All),CALLS_RECEIVED(Online),CALLS_RECEIVED(Offline),CALLS_RECEIVED(All),CALLS_ANSWERED(Online),CALLS_ANSWERED(Offline),CALLS_ANSWERED(All),CALLS_ABANDONED(Online),CALLBACKS_NOT_ANSWERED(Offline),CALLS_NOT_SERVICED(All),ABANDON_RATE(Online),CALLBACK_NOT_ANSWER_RATE(Offline),NO_SERVICE_RATE(All),AVG_QUEUE_LENGTH(Online),AVG_QUEUE_LENGTH(Offline),AVG_QUEUE_LENGTH(All),SERVER_UTILIZATION,Sim_Time,Percent_Accepting_Callback,Percent_Answering_Callback\n");
+    fprintf(outfile,"Iteration, Servers, Policy, Throughput, AWT_All, AWT_On, Rho_On, Rho_All, AWT(Online),AWT(Offline),AWT(All),");
+    fprintf(outfile,"CALLS_RECEIVED(Online),CALLS_RECEIVED(Offline),CALLS_RECEIVED(All),CALLS_ANSWERED(Online),CALLS_ANSWERED(Offline),");
+    fprintf(outfile,"CALLS_ANSWERED(All),CALLS_ABANDONED(Online),CALLBACKS_NOT_ANSWERED(Offline),CALLS_NOT_SERVICED(All),ABANDON_RATE(Online),");
+    fprintf(outfile,"CALLBACK_NOT_ANSWER_RATE(Offline),NO_SERVICE_RATE(All),AVG_QUEUE_LENGTH(Online),AVG_QUEUE_LENGTH(Offline),AVG_QUEUE_LENGTH(All),");
+    fprintf(outfile,"SERVER_UTILIZATION,Sim_Time,Percent_Accepting_Callback,Percent_Answering_Callback\n");
 
 
     /*We iterate through different number of servers in the system*/
@@ -493,6 +498,8 @@ main()  /* Main function. */
     } /*Closing the loop for policy_number*/
     fclose(infile);
     fclose(outfile);
+
+    return 0;
 }
 
 /*******************************************************************************************/
@@ -1019,7 +1026,7 @@ void depart(int depart_server)  /* Departure event function. */
             message = transfer[5];
         }
 
-        atrisk[1+n_message_subsets][1+2][1+T_max], servicenum[1+n_message_subsets][1+2][1+T_max];
+        /*atrisk[1+n_message_subsets][1+2][1+T_max], servicenum[1+n_message_subsets][1+2][1+T_max];*/
 
         if (delay>0 && num_custs_delayed>=transient){
             servicenum[message][queue_to_serve][delay]=servicenum[message][queue_to_serve][delay]+1;

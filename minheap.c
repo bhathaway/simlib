@@ -82,9 +82,9 @@ static void _swap_elements(struct MinHeapHandle * heap,
 static void _bubble_down(struct MinHeapHandle * heap, size_t index)
 {
     size_t length = heap->element_count;
-    int left_child_index = 2*index + 1;
-    int right_child_index = 2*index + 2;
-    int min_index;
+    size_t left_child_index = 2*index + 1;
+    size_t right_child_index = 2*index + 2;
+    size_t min_index;
 
     if (left_child_index >= length) {
         return; /* index is a leaf */
