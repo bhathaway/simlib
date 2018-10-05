@@ -42,10 +42,30 @@ void init_simlib()
     /* Allocate space for the lists. */
 
     list_rank = (int *)            calloc(listsize,   sizeof(int));
+    if (list_rank == NULL) {
+        printf("Out of memory\n");
+        exit(1);
+    }
     list_size = (int *)            calloc(listsize,   sizeof(int));
+    if (list_size == NULL) {
+        printf("Out of memory\n");
+        exit(1);
+    }
     head      = (struct master **) calloc(listsize,   sizeof(struct master *));
+    if (head == NULL) {
+        printf("Out of memory\n");
+        exit(1);
+    }
     tail      = (struct master **) calloc(listsize,   sizeof(struct master *));
-    transfer  = (double *)          calloc(maxatr + 1, sizeof(double));
+    if (tail == NULL) {
+        printf("Out of memory\n");
+        exit(1);
+    }
+    transfer  = (double *)         calloc(maxatr + 1, sizeof(double));
+    if (transfer == NULL) {
+        printf("Out of memory\n");
+        exit(1);
+    }
 
     /* Initialize list attributes. */
 
@@ -67,6 +87,10 @@ void init_simlib()
 
     event_alloc_size = sizeof(double) * (maxatr + 1);
     event_heap = minheap_construct(event_alloc_size, event_later);
+    if (event_heap == NULL) {
+        printf("out of memory");
+        exit(1);
+    }
 }
 
 void cleanup_simlib()
@@ -312,7 +336,9 @@ void list_remove(int option, int list)
     memcpy(transfer, row->value, sizeof(double) * (maxatr + 1));
 
     free(row->value);
+    row->value = NULL;
     free(row);
+    row = NULL;
 
     /* Update the area under the number-in-list curve. */
 

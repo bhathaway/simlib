@@ -30,17 +30,20 @@ struct MinHeapHandle *
     result->element_count = 0;
     result->element_array = malloc(result->allocated_blocks * sizeof(void *));
     if (result->element_array == NULL) {
+        free(result);
         return NULL;
     }
     *result->element_array = malloc(MINHEAP_MIN_ALLOC * element_size);
     if (*result->element_array == NULL) {
         free(result->element_array);
+        free(result);
         return NULL;
     }
     result->temp = malloc(element_size);
     if (result->temp == NULL) {
         free(*result->element_array);
         free(result->element_array);
+        free(result);
         return NULL;
     }
 
@@ -52,11 +55,15 @@ void minheap_destroy(struct MinHeapHandle * heap)
     size_t i;
 
     free(heap->temp);
+    heap->temp = NULL;
     for (i = 0; i < heap->allocated_blocks; ++i) {
         free(heap->element_array[i]);
+        heap->element_array[i] = NULL;
     }
     free(heap->element_array);
+    heap->element_array = NULL;
     free(heap);
+    heap = NULL;
 }
 
 static void * _element_at(struct MinHeapHandle * heap, size_t index)
